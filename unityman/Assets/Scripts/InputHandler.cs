@@ -7,7 +7,7 @@ public class InputHandler : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        jump = Input.GetKey(KeyCode.Space);
+        jump = Input.GetKeyDown(KeyCode.Space);
         up = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow));
         left = (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow));
         down = (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow));

@@ -65,7 +65,7 @@ public class Player : MyGameObject
 
         _movementSpeed = 5;
         _currentHealthValue = _maxHealthValue;
-        _jumpForce = 0.2f;
+        _jumpForce = 350f;
         _jumpGravity = -0.5f;
         _speed = 5;
         _fallcounter = 10;
@@ -124,22 +124,20 @@ public class Player : MyGameObject
 
         if ((_inputHandler.up))
         {
-            nodePosition.z += _movementSpeed * deltaTime * -Mathf.Cos(roty_rad);
-            nodePosition.x += _movementSpeed * deltaTime * -Mathf.Sin(roty_rad);
+            gameObject.transform.Translate(new Vector3(_movementSpeed * deltaTime * -Mathf.Sin(roty_rad),0,_movementSpeed * deltaTime * -Mathf.Cos(roty_rad)));
         }
         else if ((_inputHandler.down))
         {
-            nodePosition.z -= _movementSpeed * deltaTime * -Mathf.Cos(roty_rad);
-            nodePosition.x -= _movementSpeed * deltaTime * -Mathf.Sin(roty_rad);
+            gameObject.transform.Translate(new Vector3(-_movementSpeed * deltaTime * -Mathf.Sin(roty_rad), 0, -_movementSpeed * deltaTime * -Mathf.Cos(roty_rad)));
         }
 
         if ((_inputHandler.left))
         {
-            _rotation.y -= _speedRotY * deltaTime;
+            gameObject.transform.Rotate(new Vector3(0, -_speedRotY * deltaTime, 0));
         }
         else if ((_inputHandler.right))
         {
-            _rotation.y += _speedRotY * deltaTime;
+            gameObject.transform.Rotate(new Vector3(0, _speedRotY * deltaTime, 0));
         }
 
         if ((_inputHandler.left) && (_inputHandler.right) ||
@@ -148,20 +146,19 @@ public class Player : MyGameObject
             nodePosition = transform.position;
             _rotation = transform.rotation;
 
-            if ((_inputHandler.jump) && !isGrounded())
-            {
-                GetComponent<Rigidbody>().AddForce(0, _jumpForce, 0);
-            }
-
             GetComponent<Rigidbody>().AddForce((nodePosition - transform.position).normalized);
             //transform.position = nodePosition;
             transform.rotation = (_rotation);
+        }
+        if ((_inputHandler.jump) && isGrounded())
+        {
+            GetComponent<Rigidbody>().AddForce(0, _jumpForce, 0);
         }
     }
 
     bool isGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, GetComponent<MeshRenderer>().bounds.center.y + 0.1f);
+        return Physics.Raycast(transform.position, -Vector3.up, -GetComponent<MeshRenderer>().bounds.center.y + 0.1f);
     }
 
     // player can throw snowballs when the mouse is pressed
@@ -171,7 +168,7 @@ public class Player : MyGameObject
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 100.0f))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             Vector3 throwDestination = hit.point;
             //make sure we always throw at the same height as the player

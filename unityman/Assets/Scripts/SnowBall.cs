@@ -10,9 +10,11 @@ public class SnowBall : MyGameObject {
 
     void Awake()
     {
+        Physics.IgnoreCollision(gameObject.GetComponent<SphereCollider>(), GameObject.Find("Player").GetComponent<CapsuleCollider>());
         _name = "SnowBall";
-        _speed = 10.0f;
+        _speed = 1000.0f;
         _snowballLifetime = 1.3f;
+        Debug.Log(targetPosition);
         _velocity = (targetPosition - transform.position).normalized;
 
         _enemies = FindObjectsOfType<EnemyAI>();
@@ -20,9 +22,12 @@ public class SnowBall : MyGameObject {
 
     void Update()
     {
+        Physics.IgnoreCollision(gameObject.GetComponent<SphereCollider>(), GameObject.Find("Player").GetComponent<CapsuleCollider>());
         float _deltaTime = Time.deltaTime;
         _snowballLifetime -= _deltaTime;
-        transform.position = transform.position + (_velocity * _deltaTime * _speed);
+
+        gameObject.GetComponent<Rigidbody>().AddForce(_velocity * _speed * _deltaTime);
+        //transform.position = transform.position + (_velocity * _deltaTime * _speed);
 
         for (int i = 0; i < _enemies.Length; i++)
         {

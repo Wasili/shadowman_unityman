@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class MyGameObject : MonoBehaviour {
-	private string _name;
+	protected string _name;
     private bool _isDeleted;
 
     void Awake()
@@ -13,27 +13,7 @@ public class MyGameObject : MonoBehaviour {
 
     void Start()
     {
-        initialize();
-    }
 
-    void Update()
-    {
-        update(Time.deltaTime);
-    }
-    
-    void initialize()
-    {
-        //Start-up logic is specified in the inheriting object
-    }
-
-    void update(float deltaTime)
-    {
-        //Per-frame logic is specified in the inheriting object
-    }
-
-    void renderGUI()
-    {
-        //Per-frame GUI behaviour is specified in the inheriting object
     }
 
     void Destroy()
@@ -51,7 +31,7 @@ public class MyGameObject : MonoBehaviour {
         return gameObject;
     }
 
-    bool isMarkedForDeletion()
+    public bool isMarkedForDeletion()
     {
         return _isDeleted;
     }

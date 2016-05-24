@@ -5,12 +5,12 @@ public class LightSource : MyGameObject
 {
     public GameObject _parentNode;
     protected Player _player;
-    protected float _damage;
+    protected float _damage = -5;
     protected float _lightRadius;
 
     void Awake()
     {
-        _damage = -5;
+        
     }
 
     void Start()
@@ -29,7 +29,7 @@ public class LightSource : MyGameObject
         Ray ray = new Ray(transform.position, _player.transform.position);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 100.0f))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             if (hit.transform.gameObject.tag == "Player")
             {

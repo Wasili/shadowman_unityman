@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SnowBall : MyGameObject {
+public class SnowBall : MyGameObject
+{
     private float _speed;
     private float _snowballLifetime;
     private Vector3 _velocity;

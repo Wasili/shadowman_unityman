@@ -12,21 +12,21 @@ public class FireBall : MyGameObject
     private float _timLeft;
     private Player _player;
 
-void Awake()
-{
-    _timLeft = 1.5f;
-    //_fireBallSound = _soundEngine->play3D("../media/fireBallSound.ogg", _sceneNode->getPosition(), false, true, false);
-}
+    void Awake()
+    {
+        _timLeft = 1.5f;
+        //_fireBallSound = _soundEngine->play3D("../media/fireBallSound.ogg", _sceneNode->getPosition(), false, true, false);
+    }
 
-void Start()
+    void Start()
     {
         _player = GameObject.FindWithTag("Player").GetComponent<Player>();
         _playerPos = _player.transform.position;
         _oldPlayerPos = _player.transform.position;
     }
 
-public void attack(float deltaTime)
-{
+    public void attack(float deltaTime)
+    {
         //_fireBallSound->setIsPaused(false);
         _timLeft -= deltaTime;
         Vector3 firePos = transform.position;
@@ -48,15 +48,15 @@ public void attack(float deltaTime)
             doDamage();
             Destroy(this.gameObject);
         }
-}
+    }
 
-Vector3 getOldPlayerPos()
-{
-    return _oldPlayerPos;
-}
+    Vector3 getOldPlayerPos()
+    {
+        return _oldPlayerPos;
+    }
 
-void doDamage()
-{
-	_player.updateHealth(damage);
-}
+    void doDamage()
+    {
+        _player.updateHealth(damage);
+    }
 }

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SnowPickup : MyGameObject {
-	Player _player;
+public class SnowPickup : MyGameObject
+{
+    Player _player;
     float _gainHealth;
 
     void Awake()

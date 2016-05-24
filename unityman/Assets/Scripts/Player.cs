@@ -13,11 +13,11 @@ public class Player : MyGameObject
     private const int _numberOfMeshes = 10;
     public Mesh[] _playerMeshes = new Mesh[_numberOfMeshes];
     const float _snowballHealthCost = 0.5f;
-    
+
     public InputHandler _inputHandler;
 
-	// snowball variables
-	float _speed;
+    // snowball variables
+    float _speed;
     const float _throwCooldown = 0.5f;
     float _throwTimer;
     Vector3 _startPosition;
@@ -51,11 +51,12 @@ public class Player : MyGameObject
 
     void Awake()
     {
+        _startPosition = transform.position;
         _name = "Player";
         _grounded = false;
-        
+
         _gravity = -5.5f;
-        
+
         _speedRotY = 100;
         inShadow = false;
         _scale = 1;
@@ -89,6 +90,7 @@ public class Player : MyGameObject
         // make the model a little bit smaller and normalize its normals
         GetComponent<MeshFilter>().mesh = _playerMeshes[(int)((_currentHealthValue / _maxHealthValue) * (_numberOfMeshes - 1))];
         GetComponent<CapsuleCollider>().height = GetComponent<MeshFilter>().mesh.bounds.size.y;
+        GetComponent<CapsuleCollider>().radius = 0.8f * (GetComponent<CapsuleCollider>().height / 2.2f);
 
         _move(_deltaTime);
 
@@ -125,7 +127,7 @@ public class Player : MyGameObject
 
         if ((_inputHandler.up))
         {
-            gameObject.transform.Translate(new Vector3(_movementSpeed * deltaTime * -Mathf.Sin(roty_rad),0,_movementSpeed * deltaTime * -Mathf.Cos(roty_rad)));
+            gameObject.transform.Translate(new Vector3(_movementSpeed * deltaTime * -Mathf.Sin(roty_rad), 0, _movementSpeed * deltaTime * -Mathf.Cos(roty_rad)));
         }
         else if ((_inputHandler.down))
         {
@@ -159,7 +161,7 @@ public class Player : MyGameObject
 
     bool isGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, GetComponent<MeshRenderer>().bounds.size.y / 2);
+        return Physics.Raycast(transform.position, -Vector3.up, (GetComponent<MeshRenderer>().bounds.size.y / 2) + 0.1f);
     }
 
     // player can throw snowballs when the mouse is pressed
@@ -197,15 +199,15 @@ public class Player : MyGameObject
         return (_currentHealthValue / _maxHealthValue) * 100;
     }
 
-   /*void renderGUI()
-    {
-        //Create health bar and change the color from blue to red when it's decreased
-        _videoDriver.draw2DRectangle(core::rect<int>(_xBar + 3, _yBar + 3, static_cast<int>(_currentHealthValue) * 2 + _xBar - 3, (_yBar + 40) - 3),
-        video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
-        video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
-        video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
-        video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)));
-    }*/
+    /*void renderGUI()
+     {
+         //Create health bar and change the color from blue to red when it's decreased
+         _videoDriver.draw2DRectangle(core::rect<int>(_xBar + 3, _yBar + 3, static_cast<int>(_currentHealthValue) * 2 + _xBar - 3, (_yBar + 40) - 3),
+         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
+         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
+         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
+         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)));
+     }*/
 
     void startPosition(Vector3 pos)
     {

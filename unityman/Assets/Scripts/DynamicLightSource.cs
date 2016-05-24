@@ -24,6 +24,7 @@ public class DynamicLightSource : LightSource
 
     void Start()
     {
+        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
         _targetPosition = _player.transform.position;
         _lastKnownPlayerPos = _player.transform.position;
     }

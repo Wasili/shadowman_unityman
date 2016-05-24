@@ -88,6 +88,7 @@ public class Player : MyGameObject
 
         // make the model a little bit smaller and normalize its normals
         GetComponent<MeshFilter>().mesh = _playerMeshes[(int)((_currentHealthValue / _maxHealthValue) * (_numberOfMeshes - 1))];
+        GetComponent<CapsuleCollider>().height = GetComponent<MeshFilter>().mesh.bounds.size.y;
 
         _move(_deltaTime);
 
@@ -158,7 +159,7 @@ public class Player : MyGameObject
 
     bool isGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, -GetComponent<MeshRenderer>().bounds.center.y + 0.1f);
+        return Physics.Raycast(transform.position, -Vector3.up, GetComponent<MeshRenderer>().bounds.size.y / 2);
     }
 
     // player can throw snowballs when the mouse is pressed
@@ -176,7 +177,7 @@ public class Player : MyGameObject
             //add a new snowball to our snowball list
             //_snowBallList.push_back(new SnowBall("SnowBall", _triangleSelector, getSceneNode().getPosition(), throwDestination));
             SnowBall b = ((GameObject)Instantiate(snowball, transform.position, new Quaternion())).GetComponent<SnowBall>();
-            b.targetPosition = throwDestination;
+            b.setTargetPosition(throwDestination);
         }
         updateHealth(-_snowballHealthCost);
     }

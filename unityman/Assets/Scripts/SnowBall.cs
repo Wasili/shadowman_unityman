@@ -5,7 +5,7 @@ public class SnowBall : MyGameObject {
     private float _speed;
     private float _snowballLifetime;
     private Vector3 _velocity;
-    public Vector3 targetPosition;
+    private Vector3 targetPosition;
     private EnemyAI[] _enemies;
 
     void Awake()
@@ -14,7 +14,6 @@ public class SnowBall : MyGameObject {
         _name = "SnowBall";
         _speed = 1000.0f;
         _snowballLifetime = 1.3f;
-        Debug.Log(targetPosition);
         _velocity = (targetPosition - transform.position).normalized;
 
         _enemies = FindObjectsOfType<EnemyAI>();
@@ -26,7 +25,6 @@ public class SnowBall : MyGameObject {
         float _deltaTime = Time.deltaTime;
         _snowballLifetime -= _deltaTime;
 
-        gameObject.GetComponent<Rigidbody>().AddForce(_velocity * _speed * _deltaTime);
         //transform.position = transform.position + (_velocity * _deltaTime * _speed);
 
         for (int i = 0; i < _enemies.Length; i++)
@@ -48,5 +46,17 @@ public class SnowBall : MyGameObject {
         {
             Destroy(gameObject);
         }
+    }
+
+    public void setTargetPosition(Vector3 targetPos)
+    {
+        targetPosition = targetPos;
+        _velocity = (targetPosition - transform.position).normalized;
+        gameObject.GetComponent<Rigidbody>().AddForce(_velocity * _speed);
+    }
+
+    void OnCollisionEnter(Collision coll)
+    {
+        Destroy(this.gameObject);
     }
 }

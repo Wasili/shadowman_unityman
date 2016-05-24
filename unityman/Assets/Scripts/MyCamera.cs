@@ -17,6 +17,7 @@ public class MyCamera : MyGameObject {
     void Start()
     {
         _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _cameraSceneNode.transform.LookAt(_player.transform.position);
     }
 
     Camera getSceneNode()
@@ -29,9 +30,6 @@ public class MyCamera : MyGameObject {
     {
         // get current position
         _cameraPos = transform.position;
-
-        //look at the player
-        _cameraSceneNode.transform.LookAt(_player.transform.position);
 
         // update the camera position
         _cameraPos = _player.transform.position + _fixedCameraPos;

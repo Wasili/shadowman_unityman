@@ -25,7 +25,7 @@ void Start()
         _oldPlayerPos = _player.transform.position;
     }
 
-void attack(float deltaTime)
+public void attack(float deltaTime)
 {
         //_fireBallSound->setIsPaused(false);
         _timLeft -= deltaTime;

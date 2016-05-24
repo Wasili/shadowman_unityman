@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MyGameObject : MonoBehaviour {
-	protected string _name;
+public class MyGameObject : MonoBehaviour
+{
+    protected string _name;
     private bool _isDeleted;
 
     void Awake()
     {
         _name = name;
-	    _isDeleted = false;
+        _isDeleted = false;
     }
 
     void Start()

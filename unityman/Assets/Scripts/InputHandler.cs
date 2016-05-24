@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InputHandler : MonoBehaviour {
+public class InputHandler : MonoBehaviour
+{
     [System.NonSerialized]
     public bool jump, left, right, up, down, fire;
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
         jump = Input.GetKeyDown(KeyCode.Space);
         up = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow));
         left = (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow));

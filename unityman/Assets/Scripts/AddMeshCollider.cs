@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AddMeshCollider : MonoBehaviour {
+public class AddMeshCollider : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Awake () {
+    // Use this for initialization
+    void Awake()
+    {
         MeshFilter meshFilter = GetComponentInChildren<MeshFilter>();
         MeshCollider coll = GetComponent<MeshCollider>();
         if (coll == null)
@@ -12,5 +14,5 @@ public class AddMeshCollider : MonoBehaviour {
             coll = gameObject.AddComponent<MeshCollider>();
         }
         coll.sharedMesh = meshFilter.mesh;
-	}
+    }
 }

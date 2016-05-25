@@ -64,7 +64,8 @@ public class EnemyAI : MyGameObject
     {
         if (_state == State.patrol)
         {
-            if (_calculateWayPoint())
+            _findNewTarget();
+            /*if (_calculateWayPoint())
             {
                 for (int i = 0; i < wayPointPositions.Count; i++)
                 {
@@ -78,7 +79,7 @@ public class EnemyAI : MyGameObject
 
                     transform.position = (enemyPos);
                 }
-            }
+            }*/
         }
         else if (_state == State.move)
         {

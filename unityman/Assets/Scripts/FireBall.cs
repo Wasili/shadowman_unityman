@@ -27,26 +27,29 @@ public class FireBall : MyGameObject
 
     public void attack(float deltaTime)
     {
-        //_fireBallSound->setIsPaused(false);
-        _timLeft -= deltaTime;
-        Vector3 firePos = transform.position;
-        Vector3 direction = firePos - _oldPlayerPos;
-        direction.Normalize();
-
-        firePos.x += _speed * -direction.x * deltaTime;
-        firePos.z += _speed * -direction.z * deltaTime;
-        //_fireBallSound->setPosition(firePos);
-        transform.position = (firePos);
-
-        if (_timLeft <= 0)
+        if (gameObject != null)
         {
-            Destroy(this.gameObject);
-        }
+            //_fireBallSound->setIsPaused(false);
+            _timLeft -= deltaTime;
+            Vector3 firePos = transform.position;
+            Vector3 direction = firePos - _oldPlayerPos;
+            direction.Normalize();
 
-        if (GetComponent<MeshFilter>().mesh.bounds.Contains(_player.transform.position))
-        {
-            doDamage();
-            Destroy(this.gameObject);
+            firePos.x += _speed * -direction.x * deltaTime;
+            firePos.z += _speed * -direction.z * deltaTime;
+            //_fireBallSound->setPosition(firePos);
+            transform.position = (firePos);
+
+            if (_timLeft <= 0)
+            {
+                Destroy(this.gameObject);
+            }
+
+            if (GetComponent<MeshFilter>().mesh.bounds.Contains(_player.transform.position))
+            {
+                doDamage();
+                Destroy(this.gameObject);
+            }
         }
     }
 

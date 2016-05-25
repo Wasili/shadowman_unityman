@@ -38,7 +38,7 @@ public class Player : MyGameObject
 
     // health bar variables
 
-    float _jumpForce;
+    public float _jumpForce;
 
     // health bar
     int _xBar;
@@ -66,8 +66,8 @@ public class Player : MyGameObject
 
         _movementSpeed = 5;
         _currentHealthValue = _maxHealthValue;
-        _jumpForce = 1750f;
-        _jumpGravity = -0.5f;
+        //_jumpForce = 1750f;
+        //_jumpGravity = -0.5f;
         _speed = 5;
         _fallcounter = 10;
         _canSpawnSnowBall = false;

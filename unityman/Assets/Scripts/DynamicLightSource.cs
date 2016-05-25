@@ -91,7 +91,7 @@ public class DynamicLightSource : MyGameObject
     {
         //create a ray with its starting point being the mouse cursor. This method automatically converts screen coordindates to world coordinates if the correct camera is provided
         Ray ray = new Ray(_player.transform.position, transform.position);
-        Debug.DrawRay(ray.origin, ray.direction * 1000);
+        //Debug.DrawRay(ray.origin, ray.direction * 1000);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100.0f))
         {

@@ -179,7 +179,7 @@ public class Player : MyGameObject
     void _throwSnowBall()
     {
         //create a ray with its starting point being the mouse cursor. This method automatically converts screen coordindates to world coordinates if the correct camera is provided
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(_inputHandler.mobileVersion ? new Vector3(_inputHandler.shootTouch.position.x, _inputHandler.shootTouch.position.y, 0) : Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))

@@ -66,7 +66,7 @@ public class Player : MyGameObject
 
         _movementSpeed = 5;
         _currentHealthValue = _maxHealthValue;
-        _jumpForce = 350f;
+        _jumpForce = 1750f;
         _jumpGravity = -0.5f;
         _speed = 5;
         _fallcounter = 10;
@@ -81,7 +81,7 @@ public class Player : MyGameObject
     {
     }
 
-    void Update()
+    void FixedUpdate()
     {
         _deltaTime = Time.deltaTime;
 

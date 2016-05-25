@@ -27,7 +27,7 @@ public class MyCamera : MyGameObject
     }
 
     // Camera follows player around
-    void Update()
+    public void FixedUpdate()
     {
         // get current position
         _cameraPos = transform.position;

@@ -13,7 +13,7 @@ public class DynamicLightSource : MyGameObject
     Vector3 _lastKnownPlayerPos;
     const float _searchCooldown = 2.0f;
     float _searchTimer;
-    const float _baseRotationSpeed = 10.0f;
+    const float _baseRotationSpeed = 1.0f;
     float _rotationSpeed;
     float _movementSpeed;
     
@@ -91,6 +91,7 @@ public class DynamicLightSource : MyGameObject
     {
         //create a ray with its starting point being the mouse cursor. This method automatically converts screen coordindates to world coordinates if the correct camera is provided
         Ray ray = new Ray(_player.transform.position, transform.position);
+        //Debug.DrawRay(ray.origin, ray.direction * 1000);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100.0f))
         {

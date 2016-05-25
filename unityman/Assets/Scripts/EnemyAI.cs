@@ -29,13 +29,24 @@ public class EnemyAI : MyGameObject
     List<Vector3> wayPointPositions = new List<Vector3>();
     bool calculateColsestWayPoint;
 
+    int _randomcorner;
+    Vector3 _corner1;
+    Vector3 _corner2;
+    Vector3 _corner3;
+    Vector3 _corner4;
+
     void Awake()
     {
         _speed = .1f;
         _rotateSpeed = 10;
         _state = State.root;
         _counter = 0;
-        _wayPoints();
+        _corner1 = new  Vector3(-20, 1, 24);
+        _corner2 = new Vector3(30, 1, 30);
+        _corner3 = new Vector3(25, 1, -30);
+        _corner4 = new Vector3(-26, 1, -34);
+
+        _getRandomcorner();
         calculateColsestWayPoint = true;
     }
 
@@ -112,11 +123,14 @@ public class EnemyAI : MyGameObject
         if (_state == State.attack)
         {
             transform.LookAt(_player.transform.position);
+            _createFireBall(deltaTime);
+        }
+        if (_state == State.attack || _state == State.move || _state == State.patrol || _state == State.combat)
+        {
             _attack(deltaTime);
         }
     }
-
-    void _attack(float deltaTime)
+    void _createFireBall(float deltaTime)
     {
         if (_counter <= 0)
         {
@@ -124,30 +138,79 @@ public class EnemyAI : MyGameObject
             fireBallList.Add(fireBall);
             _counter = _shootCoolDown;
         }
+        _counter -= deltaTime;
 
-        for (int i = 0; i < fireBallList.Count; i++)
+    }
+    void _attack(float deltaTime)
+    {
+        if (fireBallList.Count > 0)
         {
-            if (fireBallList[i] != null)
+            for (int i = 0; i < fireBallList.Count; i++)
             {
-                fireBallList[i].attack(deltaTime);
-                if (fireBallList[i].isMarkedForDeletion())
+                if (fireBallList[i] != null)
                 {
-                    FireBall deletionObject = fireBallList[i];
-                    fireBallList.RemoveAt(i);
-                    Destroy(deletionObject);
+                    fireBallList[i].attack(deltaTime);
+                    if (fireBallList[i].isMarkedForDeletion())
+                    {
+                        FireBall deletionObject = fireBallList[i];
+                        fireBallList.RemoveAt(i);
+                        Destroy(deletionObject);
+                    }
                 }
             }
         }
-        _counter -= deltaTime;
     }
 
-    void _wayPoints()
+    Vector3 _corner()
     {
-        wayPointPositions.Add(new Vector3(-25, 1.2f, 20));
-        wayPointPositions.Add(new Vector3(25, 1.2f, 20));
-        wayPointPositions.Add(new Vector3(-25, 1.2f, -20));
-        wayPointPositions.Add(new Vector3(25, 1.2f, -20));
+        switch (_randomcorner)
+        {
+            case 1:
+                return _corner1;
+                break;
+            case 2:
+                return _corner2;
+                break;
+            case 3:
+                return _corner3;
+                break;
+            case 4:
+                return _corner4;
+                break;
+        }
+
+        return new Vector3(0, 0, 0);
     }
+    int _getRandomcorner()
+    {
+
+        return _randomcorner = Random.Range(1,5);
+    }
+    void _findNewTarget()
+    {
+        //	_sceneNode->setRotation(_faceTarget(_gridPos[randomTarget]));
+        Vector3 enemyPos = transform.position;
+        Vector3 direction = (_corner() - enemyPos).normalized;
+
+        enemyPos.z += _speed * direction.z * Time.deltaTime;
+        enemyPos.x += _speed * direction.x * Time.deltaTime;
+
+        transform.Translate(enemyPos);
+
+        if (Vector3.Distance(_corner1, transform.position) < 5.0f ||
+            Vector3.Distance(_corner2, transform.position) < 5.0f ||
+            Vector3.Distance(_corner3, transform.position) < 5.0f ||
+            Vector3.Distance(_corner4, transform.position) < 5.0f)
+
+            /* (vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f*/
+            /* || vector2df(_corner2.X, _corner2.Z).getDistanceFrom(vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f
+             || vector2df(_corner3.X, _corner3.Z).getDistanceFrom(vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f
+             || vector2df(_corner4.X, _corner4.Z).getDistanceFrom(vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f)*/
+        {
+            _getRandomcorner();
+        }
+    }
+
 
     bool _calculateWayPoint()
     {

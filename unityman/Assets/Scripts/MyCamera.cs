@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MyCamera : MyGameObject {
+public class MyCamera : MyGameObject
+{
     Camera _cameraSceneNode;
 
     Player _player;

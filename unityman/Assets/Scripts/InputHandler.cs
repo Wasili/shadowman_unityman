@@ -19,7 +19,10 @@ public class InputHandler : MonoBehaviour
             right = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow));
             pause = Input.GetKey(KeyCode.Escape);
         }
-        fire = Input.GetMouseButton(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+
+        Touch[] myTouches = Input.touches;
+
+        fire = (Input.GetMouseButton(0) || myTouches.Length > 0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
     }
 
     public void SetLeft(bool clicked)

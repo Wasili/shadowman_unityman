@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Player : MyGameObject
 {
@@ -49,6 +50,9 @@ public class Player : MyGameObject
     // delta time
     float _deltaTime;
 
+    Image healthBar;
+    public GameObject gameOverScreen;
+
     void Awake()
     {
         _startPosition = transform.position;
@@ -79,6 +83,8 @@ public class Player : MyGameObject
 
     void Start()
     {
+        healthBar = GameObject.FindWithTag("HealthBar").GetComponent<Image>();
+        Time.timeScale = 1;
     }
 
     void FixedUpdate()
@@ -107,6 +113,8 @@ public class Player : MyGameObject
         if (_currentHealthValue <= 0)
         {
             _currentHealthValue = 0;
+            Time.timeScale = 0;
+            gameOverScreen.SetActive(true);
             //TODO: set player dead, game over screen or menu
         }
 
@@ -116,6 +124,8 @@ public class Player : MyGameObject
             spawnPlayer(0);
         }
 
+        healthBar.color = new Color((255 - (_currentHealthValue * 2.55f)) / 100, 0, (0 + (_currentHealthValue * 2.55f)) / 100);
+        healthBar.fillAmount = _currentHealthValue / _maxHealthValue;
     }
 
     void _move(float deltaTime)
@@ -156,6 +166,7 @@ public class Player : MyGameObject
         if ((_inputHandler.jump) && isGrounded())
         {
             GetComponent<Rigidbody>().AddForce(0, _jumpForce, 0);
+            _inputHandler.jump = false;
         }
     }
 
@@ -198,16 +209,6 @@ public class Player : MyGameObject
     {
         return (_currentHealthValue / _maxHealthValue) * 100;
     }
-
-    /*void renderGUI()
-     {
-         //Create health bar and change the color from blue to red when it's decreased
-         _videoDriver.draw2DRectangle(core::rect<int>(_xBar + 3, _yBar + 3, static_cast<int>(_currentHealthValue) * 2 + _xBar - 3, (_yBar + 40) - 3),
-         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
-         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
-         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)),
-         video::SColor(255, 255 - static_cast<int>(_currentHealthValue * 2.55f), 0, 0 + static_cast<int>(_currentHealthValue * 2.55f)));
-     }*/
 
     void startPosition(Vector3 pos)
     {

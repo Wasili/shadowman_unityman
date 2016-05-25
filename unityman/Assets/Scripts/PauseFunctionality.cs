@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PauseFunctionality : MonoBehaviour {
     public InputHandler inputHandler;
@@ -24,6 +25,7 @@ public class PauseFunctionality : MonoBehaviour {
 
     public void Resume()
     {
+        inputHandler.pause = false;
         Time.timeScale = 1;
         pauseCanvas.SetActive(false);
     }
@@ -31,5 +33,11 @@ public class PauseFunctionality : MonoBehaviour {
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void ReloadScene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

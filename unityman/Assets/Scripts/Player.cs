@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MyGameObject
 {
@@ -50,6 +51,16 @@ public class Player : MyGameObject
     // delta time
     float _deltaTime;
 
+    public AudioSource bridgeSound;
+    public AudioSource tutorialBackgroundSound1;
+    public AudioSource tutorialBackgroundSound2;
+    public AudioSource tutorialLevel2Sound1;
+    public AudioSource tutorialLevel2Sound2;
+
+    bool won;
+    Vector3 _victorypos;
+
+
     Image healthBar;
     public GameObject gameOverScreen;
 
@@ -81,6 +92,12 @@ public class Player : MyGameObject
 
     }
 
+    public void Win(Vector3 endpos)
+    {
+        won = true;
+        _victorypos = endpos;
+    }
+
     void Start()
     {
         healthBar = GameObject.FindWithTag("HealthBar").GetComponent<Image>();
@@ -89,6 +106,14 @@ public class Player : MyGameObject
 
     void FixedUpdate()
     {
+        if (won)
+        {
+            Camera.main.transform.position += (_victorypos - transform.position).normalized * Time.deltaTime;
+            Camera.main.transform.LookAt(transform);
+            return;
+        }
+
+
         _deltaTime = Time.deltaTime;
 
         _fallcounter += _deltaTime;
@@ -166,7 +191,59 @@ public class Player : MyGameObject
         if ((_inputHandler.jump) && isGrounded())
         {
             GetComponent<Rigidbody>().AddForce(0, _jumpForce, 0);
+            GetComponent<AudioSource>().Play();
             _inputHandler.jump = false;
+        }
+
+        if(transform.position.z > 113.5 && transform.position.z < 123 && transform.position.x < 21 && 
+            transform.position.x > 18 && SceneManager.GetActiveScene().ToString() == "Level1")
+        {
+            if(!bridgeSound.isPlaying) bridgeSound.Play();
+        }
+        else
+        {
+            if (bridgeSound != null)
+                bridgeSound.Pause();
+        }
+
+        if (transform.position.z > 113.5 && SceneManager.GetActiveScene().ToString() == "Level1")
+        {
+            if (!tutorialBackgroundSound2.isPlaying) tutorialBackgroundSound2.Play();
+        }
+        else
+        {
+            if (bridgeSound != null)
+                tutorialBackgroundSound2.Pause();
+        }
+
+        if (transform.position.z < 113.5 && SceneManager.GetActiveScene().ToString() == "Level1")
+        {
+            if (!tutorialBackgroundSound1.isPlaying) tutorialBackgroundSound1.Play();
+        }
+        else
+        {
+            if (bridgeSound != null)
+                tutorialBackgroundSound1.Pause();
+        }
+
+        if (transform.position.z < -137 && SceneManager.GetActiveScene().ToString() == "Level2")
+        {
+            if (!tutorialBackgroundSound1.isPlaying) tutorialBackgroundSound1.Play();
+        }
+        else
+        {
+            if (bridgeSound != null)
+                tutorialBackgroundSound1.Pause();
+        }
+
+        if (transform.position.z > -137 && SceneManager.GetActiveScene().ToString() == "Level2")
+        {
+            if (!tutorialBackgroundSound1.isPlaying) tutorialBackgroundSound1.Play();
+        }
+        else
+        {
+            if (bridgeSound != null)
+                tutorialBackgroundSound1.Pause();
         }
     }
 

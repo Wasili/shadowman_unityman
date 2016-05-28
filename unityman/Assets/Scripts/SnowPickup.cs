@@ -23,7 +23,15 @@ public class SnowPickup : MyGameObject
         {
             //if true --> Make player gain health
             _player.updateHealth(_gainHealth);
-            Destroy(gameObject);
+            GetComponent<AudioSource>().Play();
+            gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+            Invoke("kill", 1);
         }
+    }
+
+    void kill()
+    {
+
+        Destroy(gameObject);
     }
 }

@@ -44,12 +44,15 @@ public class FireBall : MyGameObject
             {
                 Destroy(this.gameObject);
             }
+        }
+    }
 
-            if (GetComponent<MeshFilter>().mesh.bounds.Contains(_player.transform.position))
-            {
-                doDamage();
-                Destroy(this.gameObject);
-            }
+    void OnCollisionEnter(Collision coll)
+    {
+        if (coll.gameObject.tag == "Player")
+        {
+            doDamage();
+            Destroy(this.gameObject);
         }
     }
 

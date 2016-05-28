@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class InputHandler : MonoBehaviour
     public bool jump, left, right, up, down, fire, pause, rotateLeft, rotateRight;
     [System.NonSerialized]
     public Touch shootTouch;
+    List<Touch> badTouches;
 
     // Update is called once per frame
     void Update()
@@ -26,16 +28,17 @@ public class InputHandler : MonoBehaviour
         }
         else
         {
-            rotateLeft = Input.acceleration.z < -0.3f;
-            rotateRight = Input.acceleration.z > 0.3f;
+            rotateLeft = Input.acceleration.x < -0.3f;
+            rotateRight = Input.acceleration.x > 0.3f;
         }
 
         Touch[] myTouches = Input.touches;
         fire = false;
+
         for (int i = 0; i < myTouches.Length; i++)
         {
             shootTouch = myTouches[i];
-            fire = !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(i);
+            fire = !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(i) && shootTouch.phase != TouchPhase.Ended;
         }
     }
 

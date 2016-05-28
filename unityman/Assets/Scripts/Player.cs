@@ -57,6 +57,9 @@ public class Player : MyGameObject
     public AudioSource tutorialLevel2Sound1;
     public AudioSource tutorialLevel2Sound2;
 
+    bool won;
+    Vector3 _victorypos;
+
 
     Image healthBar;
     public GameObject gameOverScreen;
@@ -89,6 +92,12 @@ public class Player : MyGameObject
 
     }
 
+    public void Win(Vector3 endpos)
+    {
+        won = true;
+        _victorypos = endpos;
+    }
+
     void Start()
     {
         healthBar = GameObject.FindWithTag("HealthBar").GetComponent<Image>();
@@ -97,9 +106,11 @@ public class Player : MyGameObject
 
     void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.L))
+        if (won)
         {
-            Instantiate(snowball, transform.position, new Quaternion());
+            Camera.main.transform.position += (_victorypos - transform.position).normalized * Time.deltaTime;
+            Camera.main.transform.LookAt(transform);
+            return;
         }
 
 

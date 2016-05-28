@@ -5,7 +5,7 @@ public class InputHandler : MonoBehaviour
 {
     public bool mobileVersion = false;
     [System.NonSerialized]
-    public bool jump, left, right, up, down, fire, pause;
+    public bool jump, left, right, up, down, fire, pause, rotateLeft, rotateRight;
     [System.NonSerialized]
     public Touch shootTouch;
 
@@ -21,6 +21,13 @@ public class InputHandler : MonoBehaviour
             right = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow));
             pause = Input.GetKey(KeyCode.Escape);
             fire = Input.GetMouseButton(0);
+            rotateLeft = Input.GetKey(KeyCode.Q);
+            rotateRight = Input.GetKey(KeyCode.E);
+        }
+        else
+        {
+            rotateLeft = Input.acceleration.z < -0.3f;
+            rotateRight = Input.acceleration.z > 0.3f;
         }
 
         Touch[] myTouches = Input.touches;

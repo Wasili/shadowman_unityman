@@ -8,11 +8,15 @@ public class MyCamera : MyGameObject
     Player _player;
     Vector3 _cameraPos;
     public Vector3 _fixedCameraPos;
+    Transform parentObject;
+    InputHandler inputHandler;
 
     void Awake()
     {
+        inputHandler = GameObject.FindObjectOfType<InputHandler>();
         _cameraSceneNode = GetComponent<Camera>();
         _player = null;
+        parentObject = transform.parent;
     }
 
     void Start()
@@ -30,13 +34,22 @@ public class MyCamera : MyGameObject
     public void FixedUpdate()
     {
         // get current position
-        _cameraPos = transform.position;
+        //_cameraPos = transform.position;
 
         // update the camera position
-        _cameraPos = _player.transform.position + _fixedCameraPos;
+        //_cameraPos = _player.transform.position + _fixedCameraPos;
 
         // set new position of the camera
-        _cameraSceneNode.transform.position = (_cameraPos);
+        //_cameraSceneNode.transform.position = (_cameraPos);
+        parentObject.transform.position = _player.transform.position;
+        if (inputHandler.rotateLeft)
+        {
+            parentObject.eulerAngles = new Vector3(0, parentObject.eulerAngles.y + 45 * Time.deltaTime, 0);
+        }
+        else if (inputHandler.rotateRight)
+        {
+            parentObject.eulerAngles = new Vector3(0, parentObject.eulerAngles.y - 45 * Time.deltaTime, 0);
+        }
     }
 
     void setCameraPos(Vector3 cameraPos)

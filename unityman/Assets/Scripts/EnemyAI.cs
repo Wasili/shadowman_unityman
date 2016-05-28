@@ -100,7 +100,7 @@ public class EnemyAI : MyGameObject
     void _behaviorTree(float deltaTime)
     {
         Vector3 minionPos = transform.position;
-        if (Vector3.Distance(minionPos, transform.position) > 15)
+        if (Vector3.Distance(minionPos, _player.transform.position) > 15)
         {
             _state = State.patrol;
         }
@@ -109,7 +109,7 @@ public class EnemyAI : MyGameObject
             _state = State.combat;
         }
 
-        if (_state == State.combat && Vector3.Distance(minionPos, transform.position) < 15 && Vector3.Distance(minionPos, transform.position) > 7)
+        if (_state == State.combat && Vector3.Distance(minionPos, _player.transform.position) < 15 && Vector3.Distance(minionPos, _player.transform.position) > 7)
         {
             _state = State.move;
         }
@@ -117,7 +117,7 @@ public class EnemyAI : MyGameObject
         {
             _movement(deltaTime);
         }
-        if (Vector3.Distance(minionPos, transform.position) <= 7)
+        if (Vector3.Distance(minionPos, _player.transform.position) <= 7)
         {
             _state = State.attack;
         }
@@ -135,8 +135,8 @@ public class EnemyAI : MyGameObject
     {
         if (_counter <= 0)
         {
-            FireBall tempFireBall = Instantiate(fireBall);
-            fireBallList.Add(fireBall);
+            FireBall tempFireBall = (FireBall)Instantiate(fireBall, transform.position, new Quaternion());
+            fireBallList.Add(tempFireBall);
             _counter = _shootCoolDown;
         }
         _counter -= deltaTime;
@@ -193,10 +193,10 @@ public class EnemyAI : MyGameObject
         Vector3 enemyPos = transform.position;
         Vector3 direction = (_corner() - enemyPos).normalized;
 
-        enemyPos.z += _speed * direction.z * Time.deltaTime;
-        enemyPos.x += _speed * direction.x * Time.deltaTime;
+        //enemyPos.z += _speed * direction.z * Time.deltaTime;
+        //enemyPos.x += _speed * direction.x * Time.deltaTime;
 
-        transform.Translate(enemyPos);
+        //transform.position = (enemyPos);
 
         if (Vector3.Distance(_corner1, transform.position) < 5.0f ||
             Vector3.Distance(_corner2, transform.position) < 5.0f ||

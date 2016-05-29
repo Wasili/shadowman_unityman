@@ -183,7 +183,6 @@ public class EnemyAI : MyGameObject
     }
     void _findNewTarget()
     {
-        Debug.Log(Application.loadedLevel);
         if (Application.loadedLevel == 2) // level 2 == scene 3
         {
             //_sceneNode->setRotation(_faceTarget(_gridPos[randomTarget]));

@@ -35,6 +35,10 @@ public class EnemyAI : MyGameObject
     Vector3 _corner3;
     Vector3 _corner4;
 
+    Vector3 _newPosFront;
+    Vector3 _newPosBack;
+    Vector3 _newPos;
+
     void Awake()
     {
         _speed = .1f;
@@ -48,6 +52,10 @@ public class EnemyAI : MyGameObject
 
         _getRandomcorner();
         calculateColsestWayPoint = true;
+
+        _newPosFront = gameObject.transform.position + new Vector3(0, 0, 5);
+        _newPosBack = gameObject.transform.position - new Vector3(0, 0, 5);
+        _newPos = _newPosFront;
     }
 
     void Start()
@@ -65,21 +73,6 @@ public class EnemyAI : MyGameObject
         if (_state == State.patrol)
         {
             _findNewTarget();
-            /*if (_calculateWayPoint())
-            {
-                for (int i = 0; i < wayPointPositions.Count; i++)
-                {
-                    transform.LookAt(wayPointPositions[i]);
-                    Vector3 enemyPos = transform.position;
-                    Vector3 direction = enemyPos - ((Vector3)wayPointPositions[i]);
-                    direction.Normalize();
-
-                    enemyPos.z += _speed * -direction.z * deltaTime;
-                    enemyPos.x += _speed * -direction.x * deltaTime;
-
-                    transform.position = (enemyPos);
-                }
-            }*/
         }
         else if (_state == State.move)
         {
@@ -92,7 +85,8 @@ public class EnemyAI : MyGameObject
             enemyPos.z += _speed * -direction.z * deltaTime;
             enemyPos.x += _speed * -direction.x * deltaTime;
 
-            transform.position = (enemyPos);
+            //   transform.position = (enemyPos);
+            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, Time.deltaTime * 2f);
         }
     }
 
@@ -189,26 +183,31 @@ public class EnemyAI : MyGameObject
     }
     void _findNewTarget()
     {
-        //	_sceneNode->setRotation(_faceTarget(_gridPos[randomTarget]));
-        Vector3 enemyPos = transform.position;
-        Vector3 direction = (_corner() - enemyPos).normalized;
-
-        //enemyPos.z += _speed * direction.z * Time.deltaTime;
-        //enemyPos.x += _speed * direction.x * Time.deltaTime;
-
-        //transform.position = (enemyPos);
-
-        if (Vector3.Distance(_corner1, transform.position) < 5.0f ||
-            Vector3.Distance(_corner2, transform.position) < 5.0f ||
-            Vector3.Distance(_corner3, transform.position) < 5.0f ||
-            Vector3.Distance(_corner4, transform.position) < 5.0f)
-
-            /* (vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f*/
-            /* || vector2df(_corner2.X, _corner2.Z).getDistanceFrom(vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f
-             || vector2df(_corner3.X, _corner3.Z).getDistanceFrom(vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f
-             || vector2df(_corner4.X, _corner4.Z).getDistanceFrom(vector2df(_sceneNode->getPosition().X, _sceneNode->getPosition().Z)) < 5.0f)*/
+        Debug.Log(Application.loadedLevel);
+        if (Application.loadedLevel == 2) // level 2 == scene 3
         {
-            _getRandomcorner();
+            //_sceneNode->setRotation(_faceTarget(_gridPos[randomTarget]));
+            transform.position = Vector3.MoveTowards(transform.position, _corner(), Time.deltaTime * 2f);
+
+            if (Vector3.Distance(_corner1, transform.position) < 5.0f ||
+                Vector3.Distance(_corner2, transform.position) < 5.0f ||
+                Vector3.Distance(_corner3, transform.position) < 5.0f ||
+                Vector3.Distance(_corner4, transform.position) < 5.0f)
+            {
+                _getRandomcorner();
+            }
+        }
+        else if( Application.loadedLevel == 1) // level 1 == scene 2
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _newPos, Time.deltaTime * 2f);
+            if (Vector3.Distance(_newPosFront, transform.position) < 1.0f)
+            {
+                _newPos = _newPosBack;
+            }
+            else if(Vector3.Distance(_newPosBack, transform.position) < 1.0f)
+            {
+                _newPos = _newPosFront;
+            }
         }
     }
 
